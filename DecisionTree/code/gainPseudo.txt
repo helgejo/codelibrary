@@ -1,0 +1,43 @@
+GainRatio(D,T) = Gain(D,T) / SplitInfo(D,T)
+
+   where SplitInfo(D,T) is the information due to the split of T on the basis
+   of the value of the categorical attribute D. Thus SplitInfo(D,T) is
+
+		 I(|T1|/|T|, |T2|/|T|, .., |Tm|/|T|)
+
+   where {T1, T2, .. Tm} is the partition of T induced by the value of D.
+
+   In the case of our golfing example SplitInfo(Outlook,T) is 
+
+	-5/14*log(5/14) - 4/14*log(4/14) - 5/14*log(5/14) = 1.577
+
+   thus the GainRatio of Outlook is 0.246/1.577 = 0.156. And 
+   SplitInfo(Windy,T) is 
+
+	-6/14*log(6/14) - 8/14*log(8/14) = 6/14*0.1.222 + 8/14*0.807 
+					 = 0.985
+
+   thus the GainRatio of Windy is 0.048/0.985 = 0.049
+   
+   
+   Information Gain Pseudocode
+
+infoGain(examples, attribute, entropyOfSet)
+   gain = entropyOfSet
+   for value in attributeValues(examples, attribute):
+       sub = subset(examples, attribute, value)
+       gain -=  (number in sub)/(total number of examples) * entropy(sub)
+   return gain
+Entropy Pseudocode
+
+entropy(examples)
+   '''
+   log2(x) = log(x)/log(2)
+   '''
+   result = 0
+   # handle target attributes with arbitrary labels
+   dictionary = summarizeExamples(examples, targetAttribute)
+   for key in dictionary:
+       proportion = dictionary[key]/total number of examples
+       result -= proportion * log2(proportion)
+   return result

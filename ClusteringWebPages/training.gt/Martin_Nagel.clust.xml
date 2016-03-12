@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<clustering name="Martin Nagel">
+	<entity id="3">
+		<doc rank="20" />
+	</entity>
+	<entity id="7">
+		<doc rank="31" />
+	</entity>
+	<entity id="0">
+		<doc rank="19" />
+	</entity>
+	<entity id="14">
+		<doc rank="30" />
+		<doc rank="17" />
+		<doc rank="27" />
+		<doc rank="11" />
+		<doc rank="48" />
+	</entity>
+	<entity id="1">
+		<doc rank="44" />
+	</entity>
+	<entity id="10">
+		<doc rank="32" />
+	</entity>
+	<entity id="5">
+		<doc rank="23" />
+	</entity>
+	<entity id="16">
+		<doc rank="38" />
+		<doc rank="13" />
+	</entity>
+	<entity id="13">
+		<doc rank="39" />
+		<doc rank="33" />
+	</entity>
+	<entity id="11">
+		<doc rank="47" />
+		<doc rank="18" />
+	</entity>
+	<entity id="15">
+		<doc rank="49" />
+		<doc rank="22" />
+	</entity>
+	<entity id="4">
+		<doc rank="16" />
+	</entity>
+	<entity id="8">
+		<doc rank="24" />
+	</entity>
+	<entity id="12">
+		<doc rank="50" />
+		<doc rank="35" />
+		<doc rank="10" />
+	</entity>
+</clustering>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<clustering name="Guy Dunbar">
+	<entity id="3">
+		<doc rank="32" />
+		<doc rank="27" />
+		<doc rank="4" />
+		<doc rank="24" />
+		<doc rank="28" />
+		<doc rank="1" />
+		<doc rank="18" />
+		<doc rank="7" />
+		<doc rank="15" />
+		<doc rank="19" />
+		<doc rank="39" />
+		<doc rank="42" />
+		<doc rank="2" />
+		<doc rank="31" />
+	</entity>
+	<entity id="2">
+		<doc rank="26" />
+	</entity>
+	<entity id="0">
+		<doc rank="50" />
+	</entity>
+	<entity id="1">
+		<doc rank="46" />
+	</entity>
+</clustering>

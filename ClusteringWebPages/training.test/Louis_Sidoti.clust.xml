@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<clustering name="Louis_Sidoti">"
+	<entity id="1">
+		<doc rank="2" />
+		<doc rank="3" />
+		<doc rank="4" />
+	</entity>
+	<entity id="2">
+		<doc rank="0" />
+		<doc rank="5" />
+	</entity>
+	<entity id="3">
+		<doc rank="1" />
+	</entity>
+</clustering>

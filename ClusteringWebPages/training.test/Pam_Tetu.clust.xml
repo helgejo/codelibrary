@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<clustering name="Pam_Tetu">"
+	<entity id="1">
+		<doc rank="1" />
+		<doc rank="2" />
+		<doc rank="3" />
+	</entity>
+	<entity id="2">
+		<doc rank="0" />
+	</entity>
+</clustering>

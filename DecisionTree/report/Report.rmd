@@ -1,0 +1,149 @@
+---
+title: "DAT630 - ASSIGNMENT 1 REPORT"
+author: "Helge Bjorland"
+date: "28. september 2015"
+output: word_document
+---
+
+# Instructions on how to run code
+The python code for task1 can be found in the code folder and is called "main.py". The code is seperated into functions. To run the code you simply call the main function with parameter 0 or -1. 
+
+* With parameter 0 the code will seperate the data into train/test set and evaluate the result. 
+* With parameter -1 the code will train on all the data, predict using the "adult.test" dataset and write result to "task1.out" file.
+
+Several of the functions used has been adopted from the [tutorial](http://www.onlamp.com/pub/a/python/2006/02/09/ai_decision_trees.html) given in the [practicum 3 session](https://github.com/uis-dat630-fall2015/practicum/tree/master/P03). However, most of the functions have been completely rewritten to fit the dataset and the task. The id3.py file contains the ID3 functions which calculate entropy and gain. These are quite similar to what was given in the example with only minor changes.
+
+The model for task3 can be found in the task3.r, and should be straightforward just to run.
+
+
+# Data exploration 
+(e.g., summary statistics and/or visualizations of attributes)
+```{r, echo = FALSE, message= FALSE} 
+
+library(ggplot2); library(caret); library(Hmisc); library(arules);library(corrplot); library(AppliedPredictiveModeling); library(rattle)
+set.seed(1337)
+
+#import data
+training <- read.csv("../data/adult.data", header = FALSE, na.strings = "?")
+
+colnames(training) <- c("age", "Workclass", "fnlwgt", "Education", "educationNum", "MartialStatus",
+                        "Occupation", "Relationship", "Race", "Sex", "capitalGain", "capitalLoss", "hoursPERweek", "Country", "Target")
+
+```
+
+```{r, echo = FALSE}
+#Data description
+summary(training)
+#describe(training)
+#head(training)
+#sapply(training, class)
+#str(training)
+
+```
+
+From this initial summary statistic we notice some very obvious facts. There are about twice the amount of male as female, and mostly White people located in the US. The Capital-gain and Capital-loss seems to have large spread but not very much variance. There are some missing values denoted by ?. The main observations are "<=50K" with about 76%. After reading the description for "fnlwgt" this variable seems to be used in a weight of demographic characteristic within each state. We can continue exploring the data with some simple pre-processing techniques. 
+
+```{r}
+nearZeroVar(training, saveMetrics= TRUE)
+
+descrCor <- cor(training[,c("age", "fnlwgt", "educationNum", "capitalGain", "capitalLoss", "hoursPERweek")])
+# Find correlated continous variables:
+findCorrelation(descrCor, cutoff = .75)
+
+```
+
+From this output we see that nzv = TRUE for Capital-gain and capital-loss and country i.e. they have a near-zero variance with a cutoff at 0.75 which means that they might not be very good predictors. This can be further seen if we plot the variables. We see from the plots that the variables are heavily skewed as the zero variance test indicates.
+
+```{r, echo=FALSE, warning=FALSE}
+
+plot(training$Country, main = "Country")
+hist(training$capitalGain, main = "Capital Gain")
+hist(training$capitalLoss, main = "Capital Loss")
+
+featurePlot(x = training[, 4:5],
+            y = training$Target,
+            plot = "pairs",
+            ## Add a key at the top
+            auto.key = list(columns = 3))
+
+```
+
+The last graph show how similar education and education-num are. From the litterature we know that education-num is a numeric representation of education. We can check this by running a simple linear regression between the variables. The result from this regression test can be seen in Appendix A. We see that the R2 is 1 with extremely low p-value which supports the theory that the variables perfectly explain each other.
+After analysing Marital Status it seems like much of this information is also contained in the Relationship variable.  
+
+# Data processing steps applied 
+(e.g., variable transformations, feature creation)
+
+I started by testing my decision tree by just removing all continous variables. This actually got a quite high in sample accuracy of about 82% which would probably be somewhat lower out of sample. 
+
+After doing the analysis above and reading ["Predicting earning potential on adult dataset"](http://www.dataminingmasters.com/uploads/studentProjects/Earning_potential_report.pdf) I chose to remove 
+* Country, 
+* fnlwgt, 
+* educationNum, 
+* MartialStatus
+
+In order to get the decision tree to work I also had to use discretization to change the continous variables. I choose to use the same bins as Type A from the paper mentioned above. 
+* hoursPERweek: 2 bins
+* age: 11 bins
+* capitalGain: 1500 bins
+* capitalLoss: 500 bins
+
+I chos to leave all missing values since decision trees usually can handle this well (when it's represented as a symbol). 
+
+With these transformations the model achieved a better in sample accuracy of about 84%.
+
+# Evaluation
+Looking at the first 3 levels of the decision tree, it seems that capitalGain, age and capitalLoss are the most important. It says that if you have a capitalGain of above 5119 then you earn more than 50K. Else, if you are above 30years and had a capitalLoss larger than 1820 then you also earn more than 50K. Otherwise you earn less than 50K. The majority in this first level earns less than 50K. 
+
+The 3 most important attributes are age, capitalGain and hoursPERweek. The others can be seen from the graph below. 
+
+In Appendix B I have run a decision tree without doing any preprocoessing. From this result we see that Marital Status and Education num is high up on the tree nodes and on the importance chart. This means that marital status could have more to say than first expected. Also, education num might be a better indicator than eduction as it is numeric and ordered. 
+
+I also tried several models and processing steps for task3. The model for task3 can be found in the task3.r. In the end it seemed that the best model was Stochastic Gradient Boosting (gbm) without any preprocessing steps. This indicates that the standard packages contains quite a bit of pre processing magic built in.  
+
+The other .r files are other attempts to create models. I had high hopes for an ensemble model combining several other models, but this did not improve the score.
+
+```{r, echo=FALSE}
+training.sub <- training
+training.sub <- subset(training.sub, select = -c(Country, fnlwgt, educationNum, MartialStatus))
+model <- train(Target ~., data = training.sub, method = 'rpart')
+vari <- varImp(model)
+fancyRpartPlot(model$finalModel)
+plot(vari, top = 10)
+
+```
+
+# Appendix A: Education variable correlation
+
+```{r, echo=FALSE, warning=FALSE}
+education = factor(training$Education)
+dummies = model.matrix(~education)
+#head(dummies)
+#is.factor(training$educationNum)
+educationNum = factor(training$educationNum)
+#Target = factor(training$Target)
+newEDU <- cbind(educationNum, dummies)
+#newEDU <- cbind(newEDU, Target)
+
+model <- train(educationNum~., data = newEDU, method = 'lm')
+summary(model)
+```
+#Appendix B: Decision tree with no preprocessing
+
+```{r, echo=FALSE}
+model <- train(Target ~., data = training, method = 'rpart')
+vari <- varImp(model)
+fancyRpartPlot(model$finalModel)
+plot(vari, top = 10)
+
+```
+
+#Appendix C: Sources
+[https://www.valentinmihov.com/2015/04/17/adult-income-data-set/](Detailed analysis of the attributes)
+[http://artax.karlin.mff.cuni.cz/r-help/library/arules/html/Adult.html](Some hints on how to discretize continuous attributes (age, hours per week, etc.)
+[http://scg.sdsu.edu/dataset-adult_r/](Some more hints including grouping values (country, education, etc.)
+[http://www.dataminingmasters.com/uploads/studentProjects/Earning_potential_report.pdf](MSc thesis by xxxxxxx)
+[https://en.wikipedia.org/wiki/ID3_algorithm](ID3 in Wikipedia)
+[https://en.wikipedia.org/wiki/C4.5_algorithm](C4.5 in Wikipedia)
+[http://cis-linux1.temple.edu/~giorgio/cis587/readings/id3-c45.html](Tutorial on ID3 and C4.5)
+[http://www.onlamp.com/pub/a/python/2006/02/09/ai_decision_trees.html](Building decision trees in Python)

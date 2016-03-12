@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<clustering name="Mary Lemanski">
+	<entity id="2">
+		<doc rank="11" />
+		<doc rank="27" />
+		<doc rank="77" />
+		<doc rank="86" />
+		<doc rank="97" />
+		<doc rank="25" />
+		<doc rank="26" />
+		<doc rank="0" />
+		<doc rank="40" />
+		<doc rank="88" />
+		<doc rank="28" />
+		<doc rank="60" />
+		<doc rank="10" />
+		<doc rank="12" />
+		<doc rank="37" />
+		<doc rank="9" />
+		<doc rank="92" />
+		<doc rank="98" />
+		<doc rank="96" />
+		<doc rank="31" />
+		<doc rank="41" />
+		<doc rank="19" />
+		<doc rank="78" />
+		<doc rank="90" />
+		<doc rank="70" />
+		<doc rank="87" />
+		<doc rank="6" />
+		<doc rank="69" />
+		<doc rank="62" />
+		<doc rank="22" />
+		<doc rank="84" />
+		<doc rank="13" />
+		<doc rank="93" />
+		<doc rank="64" />
+		<doc rank="38" />
+		<doc rank="89" />
+		<doc rank="53" />
+		<doc rank="79" />
+		<doc rank="47" />
+		<doc rank="56" />
+		<doc rank="82" />
+		<doc rank="54" />
+		<doc rank="73" />
+		<doc rank="95" />
+		<doc rank="33" />
+		<doc rank="20" />
+		<doc rank="85" />
+		<doc rank="58" />
+	</entity>
+	<entity id="1">
+		<doc rank="81" />
+	</entity>
+</clustering>

@@ -1,0 +1,22 @@
+Report
+Write a short (1-2 pages) report that includes the following sections.
+
+Collection and query processing
+    How did you process documents and queries?
+    Issues to cover include text extraction from HTML, tokenization, stemming, etc.
+
+Baseline and improved retrieval systems:
+    Detail the baseline system (retrieval model and parameter settings).
+    Discuss how the improved system different is from the baseline system.
+
+Results
+    Include the following table with effectiveness results for the baseline and improved systems.
+
+System	P@5	P@10	MRR	MAP	NDCG@10
+Baseline
+Improved
+
+Analysis
+    Compare the baseline and improved systems on the query level.
+    Create a plot that visualizes which queries improved and which degraded in the improved system, with respect to the baseline (use NDCG@10 as the basis of comparison).
+    Identify the top 2-2 specific queries (with queryID and query content) that improved and degraded the most.
